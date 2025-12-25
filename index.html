@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>圣诞快乐 🎄</title>
+    <style>
+        body {
+            margin: 0; padding: 0;
+            background: #fdf5f5; /* 淡淡的圣诞粉白 */
+            overflow: hidden;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            height: 100vh; width: 100vw;
+            touch-action: none; /* 防止手机端缩放 */
+        }
+
+        .blessing-card {
+            position: absolute;
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-weight: 500;
+            color: #333;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 10;
+            /* 弹出动画：由于文案变长，我们稍微调慢一点消失速度，让朋友看清内容 */
+            animation: popAndFade 5s cubic-bezier(0.17, 0.67, 0.83, 0.67) forwards;
+        }
+
+        @keyframes popAndFade {
+            0% { transform: scale(0.2) rotate(-10deg); opacity: 0; }
+            8% { transform: scale(1.05) rotate(0deg); opacity: 1; }
+            12% { transform: scale(1); opacity: 1; }
+            85% { opacity: 1; transform: translateY(0); }
+            100% { transform: translateY(-30px); opacity: 0; }
+        }
+
+        #bg-emoji {
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 150px;
+            z-index: -1;
+            opacity: 0.15;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="bg-emoji">🎄</div>
+
+    <script>
+        const blessings = [
+            "🎄 圣诞快乐！", "🎅 平安夜快乐", "✨ 愿你平安喜乐", "🎁 愿礼物不缺席",
+            "❄️ 冬日温暖", "💖 万事顺意", "🥰 所想皆如愿", "🎉 Merry Christmas",
+            "🍎 平平安安", "🌟 好运连连", "🎶 圣诞歌为你响起",
+            "🎄 愿这个冬天不冷", "🎅 圣诞老人正在路上",
+            "✨ 新年好运已加载", "🎁 快乐正在派送",
+            "💖 愿你被温柔包围", "❄️ 雪落人间", "🎉 快乐不止今天",
+            "🥰 愿你常被偏爱", "🎄 Merry Christmas!",
+            "🎁 心动不止一刻", "✨ 光一直在你身边",
+            "🍎 年年平安喜乐", "🎶 铃儿响叮当～",
+            "🎅 今晚星光很亮", "💖 一切刚刚好",
+            "❄️ 愿烦恼被雪覆盖", "🎉 幸福正在加载中",
+            "🎄 愿你所求皆得", "🥰 圣诞快乐呀",
+            "🍭 所有的好运都在袜子里", "🕯️ 愿你的心愿都能实现"
+        ];
+
+        // 这里的配色选用了更柔和、高级的马卡龙色系
+        const colors = [
+            "#f8d7da", "#d1ecf1", "#d4edda", "#fff3cd", 
+            "#f3f0ff", "#e7f5ff", "#fff9db", "#e2e3e5",
+            "#ffebef", "#e6fffa", "#fdf2f8"
+        ];
+
+        function create() {
+            const card = document.createElement('div');
+            card.className = 'blessing-card';
+            
+            // 随机抽取祝福文案
+            card.innerText = blessings[Math.floor(Math.random() * blessings.length)];
+            
+            // 随机设置颜色和阴影
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            card.style.backgroundColor = randomColor;
+            card.style.border = `1px solid ${randomColor}`;
+
+            // 随机字体大小 (14px - 18px)
+            card.style.fontSize = (Math.random() * 4 + 14) + 'px';
+            
+            // 随机位置：考虑到文案较长，x轴留出更多余量
+            const x = Math.random() * (window.innerWidth - 180);
+            const y = Math.random() * (window.innerHeight - 50);
+            card.style.left = x + 'px';
+            card.style.top = y + 'px';
+            
+            // 每一张新的卡片都显示在最上层
+            card.style.zIndex = Math.floor(Date.now() / 100);
+
+            document.body.appendChild(card);
+
+            // 5秒后清理DOM，保持流畅度
+            setTimeout(() => card.remove(), 5000);
+        }
+
+        // 启动生成器：每 120 毫秒生成一个，非常密集
+        let timer = setInterval(create, 120);
+
+        // 如果用户点击屏幕，生成速度瞬间加倍（互动小彩蛋）
+        window.addEventListener('mousedown', () => {
+            for(let i=0; i<5; i++) create();
+        });
+    </script>
+</body>
+</html>
